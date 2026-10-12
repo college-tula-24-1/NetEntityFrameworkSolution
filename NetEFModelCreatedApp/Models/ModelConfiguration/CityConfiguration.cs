@@ -13,15 +13,16 @@ namespace NetEFModelCreatedApp.Models.ModelConfiguration
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
+
             builder.HasKey(c => c.Id)
                    .HasName("PK_Cities");
 
             builder.HasAlternateKey(c => c.Title)
-                   .HasName("UQ_Title");
+                   .HasName("UQ_Cities_Title");
 
             builder.HasIndex(c => c.Title)
                    .HasFilter("[Title] IS NOT NULL")
-                   .HasDatabaseName("IX_Title");
+                   .HasDatabaseName("IX_Cities_Title");
 
             builder.ToTable("Cities");
 

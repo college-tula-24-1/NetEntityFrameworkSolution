@@ -12,5 +12,7 @@ namespace NetEFModelCreatedApp.Models
         public string Title { get; set; } = null!;
         public DateOnly? DateStart { get; set; }
         public DateOnly? DateFinish { get; set; } = null;
+
+        public List<Employee> Employees { get; set; } = new();
     }
 }

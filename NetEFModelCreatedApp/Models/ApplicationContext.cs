@@ -14,14 +14,16 @@ namespace NetEFModelCreatedApp.Models
     {
         public DbSet<City> Cities { get; set; } = null!;
         public DbSet<Company> Companies { get; set; } = null!;
+        public DbSet<Position> Positions { get; set; } = null!;
         public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<Project> Projects { get; set; } = null!;
 
-        //public DbSet<Passport> Passports { get; set; }
+
 
         public ApplicationContext()
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -42,48 +44,17 @@ namespace NetEFModelCreatedApp.Models
 
             modelBuilder.ApplyConfiguration(new CityConfiguration());
 
-            modelBuilder.Entity<Company>()
-                        .HasKey(c => c.Id);
+            modelBuilder.ApplyConfiguration(new CompanyConfiguration());
 
-            modelBuilder.Entity<Company>()
-                        .HasAlternateKey(c => c.Title);
-                        
-            modelBuilder.Entity<Company>().ToTable("ComaniesList");
+            modelBuilder.ApplyConfiguration(new PositionConfiguration());
 
-            modelBuilder.Entity<Company>()
-                        .Property(c => c.Title)
-                        .HasMaxLength(50);
+            modelBuilder.ApplyConfiguration(new ProjectConfiguration());
 
+            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
 
-
-
-            modelBuilder.Entity<Employee>()
-                        .Property(e => e.Salary)
-                        .HasDefaultValue(100000.0M);
-
-            modelBuilder.Entity<Employee>()
-                        .ToTable(t => t.HasCheckConstraint(
-                            "SalaryCheck",
-                            "Salary > 0 AND Salary < 1000000"));
-
-            modelBuilder.Entity<Employee>()
-                        .Property(e => e.Name)
-                        .HasMaxLength(50);
-
-
-            modelBuilder.Entity<Employee>()
-                        .Property(e => e.BirthDate)
-                        .HasDefaultValueSql("GETDATE()");
-
-
-            //modelBuilder.Entity<Passport>()
-            //            .HasKey(p => new { p.Series, p.Number });
+            modelBuilder.ApplyConfiguration(new PassportConfiguration());
         }
     }
 
-    //public class Passport
-    //{
-    //    public string Series { get; set; }
-    //    public string Number { get; set; }
-    //}
+
 }

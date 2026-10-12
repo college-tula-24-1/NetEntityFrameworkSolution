@@ -11,11 +11,19 @@ namespace NetEFModelCreatedApp.Models
     {
         public int Id { get; set; }
         
-        //[MaxLength(50)]
         public string Name { get; set; } = null!;
         public DateOnly? BirthDate { get; set; }
+
+        public Passport? Passport { get; set; }
+        
         public Company? Company { get; set; }
+        public int? CompanyId { get; set; }
+
         public Position? Position { get; set; }
+        public int? PositionId { get; set; }
+
         public decimal? Salary { get; set; }
+
+        public List<Project> Projects { get; set; } = new();
     }
 }

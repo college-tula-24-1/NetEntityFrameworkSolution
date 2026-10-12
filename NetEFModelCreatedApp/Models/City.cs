@@ -13,7 +13,7 @@ namespace NetEFModelCreatedApp.Models
     public class City
     {
         public int Id { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public List<Company> Companies { get; set; } = new();
     }

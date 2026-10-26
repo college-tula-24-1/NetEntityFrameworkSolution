@@ -22,21 +22,6 @@ namespace NetEFModelCreatedApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeesId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("ProjectsEmployees", (string)null);
-                });
-
             modelBuilder.Entity("NetEFModelCreatedApp.Models.City", b =>
                 {
                     b.Property<int>("Id")
@@ -183,19 +168,24 @@ namespace NetEFModelCreatedApp.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("EmployeeProject", b =>
+            modelBuilder.Entity("NetEFModelCreatedApp.Models.ProjectEmployee", b =>
                 {
-                    b.HasOne("NetEFModelCreatedApp.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
 
-                    b.HasOne("NetEFModelCreatedApp.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("DateStart")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.HasKey("ProjectId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("ProjectsEmployees", (string)null);
                 });
 
             modelBuilder.Entity("NetEFModelCreatedApp.Models.Company", b =>
@@ -237,6 +227,25 @@ namespace NetEFModelCreatedApp.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("NetEFModelCreatedApp.Models.ProjectEmployee", b =>
+                {
+                    b.HasOne("NetEFModelCreatedApp.Models.Employee", "Employee")
+                        .WithMany("ProjectsEmployees")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NetEFModelCreatedApp.Models.Project", "Project")
+                        .WithMany("ProjectsEmployees")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("NetEFModelCreatedApp.Models.City", b =>
                 {
                     b.Navigation("Companies");
@@ -250,11 +259,18 @@ namespace NetEFModelCreatedApp.Migrations
             modelBuilder.Entity("NetEFModelCreatedApp.Models.Employee", b =>
                 {
                     b.Navigation("Passport");
+
+                    b.Navigation("ProjectsEmployees");
                 });
 
             modelBuilder.Entity("NetEFModelCreatedApp.Models.Position", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("NetEFModelCreatedApp.Models.Project", b =>
+                {
+                    b.Navigation("ProjectsEmployees");
                 });
 #pragma warning restore 612, 618
         }

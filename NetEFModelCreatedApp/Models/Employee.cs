@@ -25,5 +25,7 @@ namespace NetEFModelCreatedApp.Models
         public decimal? Salary { get; set; }
 
         public List<Project> Projects { get; set; } = new();
+
+        public List<ProjectEmployee> ProjectsEmployees { get; set; }
     }
 }

@@ -4,31 +4,23 @@ using NetEFModelCreatedApp.Models;
 
 using(ApplicationContext context = new())
 {
-    //var cities = context.Cities.ToList();
+    var employees = context.Employees
+                           .Include(e => e.Company)
+                                .ThenInclude(c => c.City)
+                           .Include(e => e.Position);
+
+    foreach (var e in employees)
+        Console.WriteLine($"Name: {e.Name}, Company: {e.Company?.Title} ({e.Company?.City?.Title}), Position: {e.Position?.Title}");
+
+    //var cities = context.Cities
+    //                    .Include(c => c.Companies);
+
     //foreach(var c in cities)
-    //    Console.WriteLine(c.Title);
-
-    var companies = context.Companies
-                           .Include(c => c.City)
-                           .Include(c => c.Employees)
-                           .ToList();
-
-    foreach (var c in companies)
-    {
-        Console.WriteLine($"Company Title: {c.Title}, City: {c.City?.Title}");
-        foreach(var e in c.Employees)
-            Console.WriteLine($"\t{e.Name}");
-    }
+    //{
+    //    Console.WriteLine($"City Title: {c.Title}");
+    //    foreach(var cmp in c.Companies)
+    //        Console.WriteLine($"\tCompany Title: {cmp.Title}");
+}
         
 
-
-    //var emploees = context.Employees
-    //                      .Include(e => e.Company)
-    //                        .ThenInclude(c => c.City)
-    //                      .Include(e => e.Position);
-    //foreach (var e in emploees)
-    //    Console.WriteLine(@$"Name: {e.Name}, 
-    //    Company: {e.Company?.Title}, 
-    //    City: {e.Company?.City?.Title},
-    //    Position: {e.Position?.Title}");
 }

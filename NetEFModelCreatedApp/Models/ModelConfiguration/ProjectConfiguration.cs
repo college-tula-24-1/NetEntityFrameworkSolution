@@ -16,6 +16,23 @@ namespace NetEFModelCreatedApp.Models.ModelConfiguration
 
             builder.Property(p => p.Title)
                    .IsRequired();
+
+            //builder.HasMany(p => p.Employees)
+            //       .WithMany(e => e.Projects)
+            //       .UsingEntity<ProjectEmployee>(
+            //        fk => fk.HasOne(pe => pe.Employee)
+            //              .WithMany(p => p.ProjectsEmployees)
+            //              .HasForeignKey(pe => pe.EmployeeId),
+            //        fk => fk.HasOne(pe => pe.Project)
+            //                .WithMany(e => e.ProjectsEmployees)
+            //                .HasForeignKey(pe => pe.ProjectId),
+            //        pe =>
+            //        {
+            //            pe.Property(pn => pn.DateStart)
+            //              .HasDefaultValueSql("GETDATE()");
+            //            pe.HasKey(pk => new { pk.ProjectId, pk.EmployeeId });
+            //            pe.ToTable("ProjectsEmployees");
+            //        });
         }
     }
 }

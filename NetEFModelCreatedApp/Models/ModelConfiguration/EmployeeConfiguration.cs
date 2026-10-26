@@ -32,9 +32,26 @@ namespace NetEFModelCreatedApp.Models.ModelConfiguration
                    .HasForeignKey(e => e.PositionId)
                    .OnDelete(DeleteBehavior.NoAction);
 
+            //builder.HasMany(e => e.Projects)
+            //       .WithMany(p => p.Employees)
+            //       .UsingEntity(ep => ep.ToTable("ProjectsEmployees"));
+
             builder.HasMany(e => e.Projects)
                    .WithMany(p => p.Employees)
-                   .UsingEntity(ep => ep.ToTable("ProjectsEmployees"));
+                   .UsingEntity<ProjectEmployee>(
+                    fk => fk.HasOne(pe => pe.Project)
+                          .WithMany(p => p.ProjectsEmployees)
+                          .HasForeignKey(pe => pe.ProjectId),
+                    fk => fk.HasOne(pe => pe.Employee)
+                            .WithMany(e => e.ProjectsEmployees)
+                            .HasForeignKey(pe => pe.EmployeeId),
+                    pe =>
+                    {
+                        pe.Property(pn => pn.DateStart)
+                          .HasDefaultValueSql("GETDATE()");
+                        pe.HasKey(pk => new { pk.ProjectId, pk.EmployeeId });
+                        pe.ToTable("ProjectsEmployees");
+                    });
         }
     }
 }
